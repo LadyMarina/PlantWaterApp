@@ -1,0 +1,633 @@
+/* ====================================================================
+   PlantCare — Hoja de estilos
+   Diseño mobile-first, paleta verde, fondo blanco limpio.
+   ==================================================================== */
+
+/* ---------- Variables de tema ---------- */
+:root {
+  --green: #4CAF50;
+  --green-dark: #388E3C;
+  --green-soft: #E8F5E9;
+
+  --ok: #4CAF50;        /* verde — al día */
+  --soon: #FB8C00;      /* naranja — regar pronto */
+  --urgent: #E53935;    /* rojo — regar ya */
+
+  --bg: #ffffff;
+  --text: #1f2937;
+  --text-soft: #6b7280;
+  --border: #e5e7eb;
+  --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+/* ---------- Reset básico ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Foco visible para accesibilidad por teclado ---------- */
+:focus-visible {
+  outline: 3px solid var(--green-dark);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ====================================================================
+   HERO BANNER
+   ==================================================================== */
+.hero {
+  background: linear-gradient(135deg, var(--green), var(--green-dark));
+  color: #fff;
+  margin: 12px;
+  padding: 20px 22px 26px;
+  border-radius: var(--radius);
+  box-shadow: 0 6px 18px rgba(56, 142, 60, 0.25);
+}
+
+.hero__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.hero__title {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.hero__subtitle {
+  margin-top: 6px;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.hero__stats {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.stat {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-sm);
+  padding: 12px 8px;
+  text-align: center;
+  backdrop-filter: blur(2px);
+}
+
+.stat__num {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.stat__label {
+  display: block;
+  font-size: 0.72rem;
+  margin-top: 2px;
+  opacity: 0.92;
+}
+
+/* ====================================================================
+   CONTENEDOR PRINCIPAL
+   ==================================================================== */
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 8px 12px 96px;
+}
+
+.section__title {
+  font-size: 1.15rem;
+  margin: 14px 4px 12px;
+  color: var(--text);
+}
+
+.empty {
+  text-align: center;
+  color: var(--text-soft);
+  padding: 40px 16px;
+  background: var(--green-soft);
+  border-radius: var(--radius);
+}
+
+/* ====================================================================
+   TARJETAS DE PLANTAS
+   ==================================================================== */
+.plant-list {
+  display: grid;
+  gap: 12px;
+}
+
+.card {
+  display: flex;
+  align-items: stretch; /* el bloque de color ocupa toda la altura */
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden; /* recorta el bloque de color a las esquinas redondeadas */
+  box-shadow: var(--card-shadow);
+}
+
+/* Bloque rectangular de color identificativo a la izquierda, con el icono centrado */
+.card__icon {
+  flex: 0 0 74px;
+  display: grid;
+  place-items: center;
+  font-size: 1.9rem;
+  background: var(--green-soft); /* respaldo si la planta no tuviera color */
+}
+
+.card__body {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 14px 16px; /* el relleno que antes tenía toda la tarjeta */
+}
+
+.card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.card__name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card__meta {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  margin-top: 2px;
+}
+
+/* Badge tipo pastilla a la derecha */
+.badge {
+  flex: 0 0 auto;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.badge--ok     { background: var(--ok); }
+.badge--soon   { background: var(--soon); }
+.badge--urgent { background: var(--urgent); }
+
+/* Barra de progreso */
+.progress {
+  margin-top: 10px;
+  height: 8px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress__bar {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.progress__bar--ok     { background: var(--ok); }
+.progress__bar--soon   { background: var(--soon); }
+.progress__bar--urgent { background: var(--urgent); }
+
+/* Acciones de la tarjeta */
+.card__actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+/* ====================================================================
+   BOTONES
+   ==================================================================== */
+.btn {
+  font: inherit;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 9px 16px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn--primary {
+  background: var(--green);
+  color: #fff;
+}
+.btn--primary:hover { background: var(--green-dark); }
+
+.btn--secondary {
+  background: #f1f5f9;
+  color: var(--text);
+}
+.btn--secondary:hover { background: #e2e8f0; }
+
+.btn--ghost {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+.btn--ghost:hover { background: rgba(255, 255, 255, 0.34); }
+
+/* Botones pequeños dentro de la tarjeta */
+.btn--sm {
+  padding: 7px 14px;
+  font-size: 0.85rem;
+}
+
+.btn--water {
+  background: var(--green);
+  color: #fff;
+}
+.btn--water:hover { background: var(--green-dark); }
+
+.btn--edit {
+  background: var(--green-soft);
+  color: var(--green-dark);
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.btn--edit:hover { background: #d6ead8; }
+
+.btn--danger {
+  background: #fdecea;
+  color: var(--urgent);
+}
+.btn--danger:hover { background: #fbd9d5; }
+
+/* Botón flotante (FAB) */
+.fab {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: none;
+  background: var(--green);
+  color: #fff;
+  font-size: 1.9rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(56, 142, 60, 0.4);
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.fab:hover { background: var(--green-dark); }
+.fab:active { transform: scale(0.94); }
+
+/* ====================================================================
+   MODAL
+   ==================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  z-index: 100;
+}
+
+/* El atributo [hidden] debe ocultar el modal pese al display: grid de arriba */
+.modal-overlay[hidden] {
+  display: none;
+}
+
+.modal {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 22px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  animation: pop 0.18s ease;
+}
+
+@keyframes pop {
+  from { transform: translateY(10px) scale(0.98); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.modal__title {
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+  color: var(--green-dark);
+}
+
+.field {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.field__label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.field input,
+.field select {
+  width: 100%;
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--text);
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--green);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.18);
+}
+
+/* ---------- Selector de color ---------- */
+.color-picker {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.1s ease, box-shadow 0.15s ease;
+}
+.swatch:hover { transform: scale(1.12); }
+
+/* Muestra seleccionada: anillo verde */
+.swatch--active {
+  border-color: #fff;
+  box-shadow: 0 0 0 2px var(--green-dark);
+}
+
+/* Control de color personalizado */
+.color-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  cursor: pointer;
+}
+
+.color-custom input[type="color"] {
+  width: 34px;
+  height: 30px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.form-error {
+  color: var(--urgent);
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+/* ====================================================================
+   CALENDARIO DE RIEGO
+   ==================================================================== */
+.calendar-section {
+  margin-top: 26px;
+}
+
+.calendar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.calendar-label {
+  min-width: 140px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--green-dark);
+  text-transform: capitalize;
+}
+
+.cal-nav-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--green-dark);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.cal-nav-btn:hover { background: var(--green-soft); }
+
+/* Cuadrícula: 7 columnas (una por día de la semana) */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-top: 12px;
+}
+
+.cal-weekday {
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-soft);
+  padding: 4px 0;
+  text-transform: uppercase;
+}
+
+.cal-cell {
+  position: relative;
+  min-height: 58px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px;
+  background: #fff;
+  font-size: 0.78rem;
+}
+
+.cal-cell--empty {
+  border: none;
+  background: transparent;
+}
+
+.cal-cell--today {
+  border-color: var(--green);
+  box-shadow: inset 0 0 0 1px var(--green);
+}
+
+.cal-cell--has {
+  cursor: pointer;
+}
+.cal-cell--has:hover {
+  background: var(--green-soft);
+}
+
+.cal-day-num {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+
+/* Indicadores dentro de cada día */
+.cal-marks {
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  align-items: center;
+}
+
+/* Badge con el nombre cuando hay una sola planta */
+.cal-badge {
+  display: block;
+  width: 100%;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #fff;
+  padding: 2px 5px;
+  border-radius: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Punto de color cuando hay varias plantas */
+.cal-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+/* Colores compartidos con el sistema de estados existente */
+.cal-badge--ok,     .cal-dot--ok     { background: var(--ok); }
+.cal-badge--soon,   .cal-dot--soon   { background: var(--soon); }
+.cal-badge--urgent, .cal-dot--urgent { background: var(--urgent); }
+
+/* Lista desplegable al hacer clic en un día */
+.cal-popover {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 4px;
+  z-index: 50;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  padding: 8px 10px;
+  min-width: 140px;
+  max-width: 200px;
+}
+
+.cal-popover ul {
+  list-style: none;
+}
+
+.cal-popover li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.8rem;
+  padding: 3px 0;
+  white-space: normal;
+}
+
+/* ====================================================================
+   RESPONSIVE — escritorio
+   ==================================================================== */
+@media (min-width: 640px) {
+  .hero {
+    margin: 20px auto;
+    max-width: 720px;
+    padding: 26px 30px 30px;
+  }
+
+  .hero__title { font-size: 1.9rem; }
+
+  .plant-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* En escritorio el botón del header basta; ocultamos el FAB */
+  .fab { display: none; }
+
+  /* Celdas de calendario más amplias en escritorio */
+  .cal-cell { min-height: 80px; }
+  .cal-grid { gap: 6px; }
+}
+
+/* Respeta usuarios que prefieren menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

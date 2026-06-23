@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PlantCare — gestor de riego de plantas que funciona en tu navegador, sin conexión." />
+  <meta name="theme-color" content="#4CAF50" />
+  <title>PlantCare — Gestor de riego de plantas</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ====================== HERO / RESUMEN DEL DÍA ====================== -->
+  <header class="hero" role="banner">
+    <div class="hero__top">
+      <h1 class="hero__title">🌿 PlantCare</h1>
+      <button id="btnAdd" class="btn btn--ghost" type="button" aria-haspopup="dialog">
+        ＋ Añadir planta
+      </button>
+    </div>
+
+    <p class="hero__subtitle">Tu resumen de riego de hoy</p>
+
+    <div class="hero__stats" aria-live="polite">
+      <div class="stat">
+        <span class="stat__num" id="statTotal">0</span>
+        <span class="stat__label">Plantas</span>
+      </div>
+      <div class="stat">
+        <span class="stat__num" id="statToday">0</span>
+        <span class="stat__label">Necesitan agua hoy</span>
+      </div>
+      <div class="stat">
+        <span class="stat__num" id="statOk">0</span>
+        <span class="stat__label">Al día</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====================== LISTA DE PLANTAS ====================== -->
+  <main class="container" role="main">
+    <section aria-labelledby="listTitle">
+      <h2 id="listTitle" class="section__title">Mis plantas</h2>
+
+      <!-- Estado vacío -->
+      <p id="emptyState" class="empty" hidden>
+        Todavía no tienes plantas. Pulsa <strong>＋ Añadir planta</strong> para empezar 🌱
+      </p>
+
+      <!-- Las tarjetas se inyectan aquí desde app.js -->
+      <div id="plantList" class="plant-list"></div>
+    </section>
+
+    <!-- ====================== CALENDARIO DE RIEGO ====================== -->
+    <section class="calendar-section" aria-labelledby="calTitle">
+      <div class="calendar-head">
+        <h2 id="calTitle" class="section__title">Calendario de riego</h2>
+        <div class="calendar-nav">
+          <button id="calPrev" class="cal-nav-btn" type="button" aria-label="Mes anterior">‹</button>
+          <span id="calLabel" class="calendar-label" aria-live="polite"></span>
+          <button id="calNext" class="cal-nav-btn" type="button" aria-label="Mes siguiente">›</button>
+        </div>
+      </div>
+
+      <!-- Cabecera de días + cuadrícula se inyectan desde app.js -->
+      <div id="calGrid" class="cal-grid"></div>
+    </section>
+
+    <!-- Botón flotante para añadir (visible sobre todo en móvil) -->
+    <button id="btnAddFloating" class="fab" type="button" aria-label="Añadir planta">＋</button>
+  </main>
+
+  <!-- ====================== MODAL: AÑADIR PLANTA ====================== -->
+  <div id="modalOverlay" class="modal-overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h2 id="modalTitle" class="modal__title">Nueva planta</h2>
+
+      <form id="plantForm" novalidate>
+        <label class="field">
+          <span class="field__label">Nombre</span>
+          <input id="fName" name="name" type="text" required maxlength="40"
+                 placeholder="Ej. Monstera" autocomplete="off" />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Tipo</span>
+          <select id="fTipo" name="tipo" required>
+            <option value="interior">Interior</option>
+            <option value="exterior">Exterior</option>
+            <option value="suculenta">Suculenta</option>
+            <option value="huerto">Huerto</option>
+            <option value="otro">Otro</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Frecuencia de riego (días)</span>
+          <input id="fCada" name="cada" type="number" required min="1" max="365"
+                 step="1" placeholder="Ej. 7" />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Fecha del último riego</span>
+          <input id="fUltimo" name="ultimo" type="date" required />
+        </label>
+
+        <div class="field">
+          <span class="field__label" id="colorLabel">Color identificativo</span>
+          <div class="color-picker">
+            <div id="swatches" class="swatches" role="group" aria-labelledby="colorLabel"></div>
+            <label class="color-custom">
+              <span class="color-custom__text">Otro</span>
+              <input id="fColor" name="color" type="color" aria-label="Color personalizado" />
+            </label>
+          </div>
+        </div>
+
+        <p id="formError" class="form-error" role="alert" hidden></p>
+
+        <div class="modal__actions">
+          <button type="button" id="btnCancel" class="btn btn--secondary">Cancelar</button>
+          <button type="submit" id="btnSubmit" class="btn btn--primary">Guardar planta</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
