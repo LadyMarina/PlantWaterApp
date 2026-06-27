@@ -1,0 +1,8 @@
+
+Running 4 tests using 4 workers
+
+[1/4] [chromium] › tests\e2e\plantcare.spec.js:29:3 › PlantCare E2E › añadir una planta aparece en la lista
+[2/4] [chromium] › tests\e2e\plantcare.spec.js:41:3 › PlantCare E2E › regar una planta vencida la deja 'Al día'
+[3/4] [chromium] › tests\e2e\plantcare.spec.js:58:3 › PlantCare E2E › editar una planta refleja el cambio en la tarjeta
+[4/4] [chromium] › tests\e2e\plantcare.spec.js:73:3 › PlantCare E2E › el calendario muestra el mes actual
+  4 passed (2.9s)

@@ -1,0 +1,38 @@
+PASS tests/integration/dom.test.js
+  Integración — gestión de plantas sobre el DOM real
+    √ arranca sin tarjetas y con el estado vacío visible (6 ms)
+    √ añadir una planta crea su tarjeta y la guarda en localStorage (12 ms)
+    √ el formulario rechaza un nombre vacío y muestra error (3 ms)
+    √ el formulario rechaza una fecha de último riego futura (4 ms)
+    √ eliminar una planta quita su tarjeta y actualiza localStorage (10 ms)
+    √ editar una planta refleja el nuevo nombre en la tarjeta (9 ms)
+    √ regar una planta vencida reinicia su estado a 'Al día' (8 ms)
+    √ el panel de resumen cuenta el total de plantas (11 ms)
+    √ el calendario navega entre meses y marca días de riego (9 ms)
+
+PASS tests/unit/plantLogic.test.js
+  computeStatus — cálculo del estado de riego
+    √ nivel 'ok' cuando queda más del 50% del intervalo
+    √ nivel 'soon' cuando queda menos del 50% pero aún no vence
+    √ nivel 'urgent' cuando se ha superado el intervalo
+    √ el porcentaje de progreso se mantiene entre 0 y 100
+    √ caso límite: frecuencia de 0 días se considera 'urgent' (1 ms)
+  save() / load() — persistencia en localStorage
+    √ guarda y recupera el array de plantas correctamente
+    √ escribe en la clave correcta de localStorage
+    √ load() devuelve un array vacío si localStorage está vacío
+  Utilidades de fecha
+    √ isoFromDate devuelve formato YYYY-MM-DD
+    √ todayISO devuelve la fecha de hoy en formato ISO corto
+
+----------|---------|----------|---------|---------|-----------------------------------------------------------------
+File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                               
+----------|---------|----------|---------|---------|-----------------------------------------------------------------
+All files |   80.54 |    58.06 |   84.48 |   83.84 |                                                                 
+ app.js   |   80.54 |    58.06 |   84.48 |   83.84 | 80-81,88-89,109,419-442,500-501,519-535,550,581,625-630,635-639 
+----------|---------|----------|---------|---------|-----------------------------------------------------------------
+Test Suites: 2 passed, 2 total
+Tests:       19 passed, 19 total
+Snapshots:   0 total
+Time:        1.313 s
+Ran all test suites.

@@ -657,4 +657,32 @@
   }
 
   document.addEventListener("DOMContentLoaded", init);
+
+  /* ====================================================================
+     EXPORTS PARA PRUEBAS (sin efecto en el navegador)
+     --------------------------------------------------------------------
+     Este bloque solo se evalúa bajo Node/Jest, donde la variable global
+     "module" existe. En el navegador "module" es undefined, por lo que
+     todo el bloque se ignora y el comportamiento de la app no cambia.
+     Permite importar las funciones internas en las pruebas unitarias.
+     ==================================================================== */
+  if (typeof module !== "undefined" && module.exports) {
+    module.exports = {
+      computeStatus,
+      plantsDueOn,
+      isoFromDate,
+      todayISO,
+      save,
+      load,
+      render,
+      addPlant,
+      updatePlant,
+      deletePlant,
+      waterPlant,
+      STORAGE_KEY,
+      // Ayudantes solo para pruebas: manipular el estado interno "plants".
+      _setPlants: (arr) => { plants = arr; },
+      _getPlants: () => plants,
+    };
+  }
 })();

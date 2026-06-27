@@ -1,0 +1,18 @@
+# Dependencias del entorno de pruebas de PlantCare (Node.js)
+# Instalación: npm install
+#
+# Aunque PlantCare es una app Vanilla JS sin dependencias en producción,
+# el entorno de pruebas usa los siguientes paquetes de desarrollo:
+
+jest@^29.7.0                  # framework de pruebas (unitarias e integración)
+jest-environment-jsdom@^29.7.0 # entorno DOM simulado para Jest
+jsdom@^25.0.0                 # carga de index.html real en las pruebas de integración
+@playwright/test@^1.48.0      # pruebas E2E en navegador real (Chromium)
+serve@^14.2.0                 # servidor estático local para las pruebas E2E
+
+# Requisitos del sistema:
+#   Node.js >= 18
+#   npm >= 9
+#
+# Tras instalar, descargar el navegador para E2E:
+#   npx playwright install chromium
