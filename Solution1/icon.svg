@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  PlantCare — Icono base de la app.
+  Gota de agua blanca con una pequeña hoja sobre fondo verde redondeado.
+  Paleta coherente con la app: verde #4CAF50 / #388E3C y blanco #ffffff.
+  Este SVG es la fuente de diseño; los PNG se generan con generate-icons.html
+  (o con el script Node) a partir de este mismo motivo.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="PlantCare">
+  <!-- Fondo verde con esquinas redondeadas -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4CAF50"/>
+      <stop offset="1" stop-color="#388E3C"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="512" height="512" rx="112" ry="112" fill="url(#bg)"/>
+
+  <!-- Gota de agua -->
+  <path d="M256 104
+           C 256 104 150 232 150 318
+           a 106 106 0 0 0 212 0
+           C 362 232 256 104 256 104 Z"
+        fill="#ffffff"/>
+
+  <!-- Brillo sutil dentro de la gota -->
+  <path d="M214 300
+           a 42 60 0 0 0 24 70"
+        fill="none" stroke="#4CAF50" stroke-opacity="0.35" stroke-width="12" stroke-linecap="round"/>
+
+  <!-- Hojita verde saliendo de la gota -->
+  <path d="M256 150
+           c 26 -34 70 -40 96 -30
+           c 6 34 -18 70 -58 74
+           c -14 -16 -26 -30 -38 -44 Z"
+        fill="#4CAF50"/>
+</svg>

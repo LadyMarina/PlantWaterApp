@@ -603,6 +603,13 @@ body {
   white-space: normal;
 }
 
+/* Botón "Exportar al calendario" bajo la cuadrícula */
+.calendar-export {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+}
+
 /* ====================================================================
    RESPONSIVE — escritorio
    ==================================================================== */
@@ -630,4 +637,62 @@ body {
 /* Respeta usuarios que prefieren menos movimiento */
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
+}
+
+/* ====================================================================
+   PWA / iPhone — instalada desde Safari ("Añadir a pantalla de inicio")
+   ==================================================================== */
+
+/* Sin resaltado azul al tocar elementos en iOS */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Respeta las zonas seguras del iPhone (notch y barra inferior).
+   Requiere viewport-fit=cover en el <meta viewport>. */
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* El contenedor deja hueco inferior para el FAB + la barra de gestos */
+.container {
+  padding-bottom: calc(96px + env(safe-area-inset-bottom));
+}
+
+/* El botón flotante se separa de los bordes seguros */
+.fab {
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  right: calc(20px + env(safe-area-inset-right));
+}
+
+/* Evita el zoom automático de Safari al enfocar campos del formulario:
+   iOS hace zoom si la fuente del campo es menor de 16px. */
+.field input,
+.field select {
+  font-size: 16px;
+}
+
+/* En dispositivos táctiles, zonas de toque de al menos 44x44px */
+@media (pointer: coarse) {
+  .btn,
+  .btn--sm {
+    min-height: 44px;
+  }
+
+  .cal-nav-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .swatch {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Las celdas del calendario que son pulsables, algo más altas */
+  .cal-cell--has {
+    min-height: 60px;
+  }
 }

@@ -340,7 +340,7 @@
     WEEKDAYS.forEach((w) => {
       const head = document.createElement("div");
       head.className = "cal-weekday";
-      enlace si se aloja online o instrucciones para ejecutar en loca      head.textContent = w;
+      head.textContent = w;
       calGrid.appendChild(head);
     });
 
@@ -440,6 +440,130 @@
     });
     pop.appendChild(ul);
     cell.appendChild(pop);
+  }
+
+  /* ====================================================================
+     EXPORTAR AL CALENDARIO (.ics)
+     --------------------------------------------------------------------
+     Genera un archivo iCalendar con un evento por cada riego previsto
+     durante los próximos 30 días. Cada evento es de día completo y lleva
+     una alarma (VALARM) a las 9:00 de ese día. El UID es estable por
+     planta y fecha para que reimportar no duplique eventos.
+     ==================================================================== */
+  const ICS_DAYS_AHEAD = 30;
+
+  function pad2(n) {
+    return String(n).padStart(2, "0");
+  }
+
+  /** Fecha local -> cadena YYYYMMDD (formato DATE de iCalendar). */
+  function icsDate(date) {
+    return `${date.getFullYear()}${pad2(date.getMonth() + 1)}${pad2(date.getDate())}`;
+  }
+
+  /** Marca de tiempo UTC YYYYMMDDTHHMMSSZ para DTSTAMP. */
+  function icsStamp(date) {
+    return (
+      date.getUTCFullYear() +
+      pad2(date.getUTCMonth() + 1) +
+      pad2(date.getUTCDate()) +
+      "T" +
+      pad2(date.getUTCHours()) +
+      pad2(date.getUTCMinutes()) +
+      pad2(date.getUTCSeconds()) +
+      "Z"
+    );
+  }
+
+  /** Escapa el texto de un campo según RFC 5545. */
+  function icsEscape(str) {
+    return String(str)
+      .replace(/\\/g, "\\\\")
+      .replace(/;/g, "\\;")
+      .replace(/,/g, "\\,")
+      .replace(/\r?\n/g, "\\n");
+  }
+
+  /**
+   * Construye el contenido del .ics.
+   * @returns {{text:string, count:number}}
+   */
+  function buildIcs() {
+    const today = todayMidnight();
+    const stamp = icsStamp(new Date());
+
+    const lines = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//PlantCare//ES",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
+      "X-WR-CALNAME:PlantCare — Riegos",
+    ];
+
+    let count = 0;
+
+    // Recorremos los próximos 30 días y, para cada uno, las plantas que
+    // toca regar (misma condición que usa el calendario visual).
+    for (let i = 1; i <= ICS_DAYS_AHEAD; i++) {
+      const day = new Date(today);
+      day.setDate(day.getDate() + i);
+
+      plants.forEach((plant) => {
+        const last = new Date(plant.ultimo + "T00:00:00");
+        const diff = Math.round((day - last) / MS_PER_DAY);
+        if (diff <= 0 || diff % plant.cada !== 0) return;
+
+        const dateStr = icsDate(day);
+        const nextDay = new Date(day);
+        nextDay.setDate(nextDay.getDate() + 1); // DTEND es exclusivo
+
+        // UID estable: misma planta + misma fecha -> mismo identificador
+        const uid = `riego-${plant.id}-${dateStr}@plantcare`;
+        const summary = icsEscape(`Regar ${plant.name}`);
+
+        lines.push(
+          "BEGIN:VEVENT",
+          `UID:${uid}`,
+          `DTSTAMP:${stamp}`,
+          `DTSTART;VALUE=DATE:${dateStr}`,
+          `DTEND;VALUE=DATE:${icsDate(nextDay)}`,
+          `SUMMARY:${summary}`,
+          "BEGIN:VALARM",
+          "ACTION:DISPLAY",
+          `DESCRIPTION:${summary}`,
+          // 9 horas tras el inicio del día (00:00) -> aviso a las 9:00
+          "TRIGGER;RELATED=START:PT9H",
+          "END:VALARM",
+          "END:VEVENT"
+        );
+        count++;
+      });
+    }
+
+    lines.push("END:VCALENDAR");
+    // iCalendar exige fin de línea CRLF
+    return { text: lines.join("\r\n"), count };
+  }
+
+  /** Genera el .ics y lo descarga con un Blob + enlace temporal. */
+  function exportIcs() {
+    const { text, count } = buildIcs();
+
+    if (count === 0) {
+      window.alert("No hay riegos previstos en los próximos 30 días.");
+      return;
+    }
+
+    const blob = new Blob([text], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "plantcare-riegos.ics";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
   }
 
   /* ====================================================================
@@ -620,6 +744,9 @@
       renderCalendar();
     });
 
+    // Exportar los riegos previstos a un archivo .ics
+    $("#btnExportIcs").addEventListener("click", exportIcs);
+
     // Clic en un día con plantas -> mostrar/ocultar la lista
     calGrid.addEventListener("click", (e) => {
       const cell = e.target.closest(".cal-cell--has");
@@ -641,6 +768,21 @@
   }
 
   /* ====================================================================
+     SERVICE WORKER (PWA / offline)
+     --------------------------------------------------------------------
+     Se registra solo si el navegador lo soporta. La ruta es relativa
+     para funcionar en GitHub Pages bajo un subdirectorio.
+     ==================================================================== */
+  function registerServiceWorker() {
+    if (!("serviceWorker" in navigator)) return;
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("sw.js")
+        .catch((err) => console.error("No se pudo registrar el service worker:", err));
+    });
+  }
+
+  /* ====================================================================
      INICIO
      ==================================================================== */
   function init() {
@@ -654,6 +796,7 @@
 
     bindEvents();
     render(); // render() también dibuja el calendario
+    registerServiceWorker(); // activa el modo offline (PWA)
   }
 
   document.addEventListener("DOMContentLoaded", init);
@@ -670,6 +813,7 @@
     module.exports = {
       computeStatus,
       plantsDueOn,
+      buildIcs,
       isoFromDate,
       todayISO,
       save,

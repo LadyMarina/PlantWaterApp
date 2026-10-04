@@ -49,11 +49,18 @@ PlantWaterApp/
 ├── index.html
 ├── styles.css
 ├── app.js                 # incluye un bloque de exports solo para Node/Jest
+├── manifest.json          # PWA: metadatos de instalación
+├── sw.js                  # PWA: service worker (offline, cache-first)
+├── icon.svg               # Fuente de diseño del icono
+├── generate-icons.html    # Generador de PNG (canvas) para la carpeta icons/
+├── icons/                 # apple-touch-icon.png, icon-192/512, 512-maskable
 ├── package.json
 ├── jest.config.js
 ├── playwright.config.js
 ├── requirements.txt
 ├── README.md
+├── scripts/
+│   └── generate-icons.js  # Generador de iconos por línea de comandos (Node)
 └── tests/
     ├── setup.js           # limpia localStorage antes de cada test
     ├── unit/
@@ -63,6 +70,36 @@ PlantWaterApp/
     └── e2e/
         └── plantcare.spec.js
 ```
+
+## PWA — instalable y offline
+
+PlantCare es una **Progressive Web App**: se puede instalar en el iPhone
+desde Safari ("Añadir a pantalla de inicio") y funciona sin conexión tras
+la primera carga.
+
+- `manifest.json` — nombre, colores, modo `standalone` e iconos. Usa rutas
+  relativas (`./`) para funcionar en GitHub Pages bajo un subdirectorio.
+- `sw.js` — service worker con estrategia *cache-first*. Para forzar una
+  actualización en dispositivos ya instalados, incrementa `CACHE_VERSION`.
+- Iconos: edita `icon.svg` y regenera los PNG abriendo `generate-icons.html`
+  en el navegador (botón "Descargar todos") o con `node scripts/generate-icons.js`.
+  Guarda los PNG en `icons/`.
+- Exportar al calendario: el botón "📅 Exportar al calendario" descarga un
+  `.ics` con los riegos de los próximos 30 días (evento de día completo y
+  alarma a las 9:00).
+
+### Publicar en GitHub Pages
+
+1. Sube el proyecto a un repositorio de GitHub.
+2. **Settings → Pages** → *Source*: rama `main`, carpeta `/root` → *Save*.
+3. Abre la URL `https://<usuario>.github.io/<repo>/` (requiere HTTPS, que
+   GitHub Pages ya ofrece, imprescindible para el service worker).
+
+### Instalar en el iPhone
+
+1. Abre esa URL en **Safari** (no sirve Chrome en iOS para instalar).
+2. Toca **Compartir** → **Añadir a pantalla de inicio** → **Añadir**.
+3. Ábrela desde el icono: arranca a pantalla completa y funciona offline.
 
 ## Nota sobre `app.js`
 

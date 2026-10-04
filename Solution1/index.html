@@ -2,10 +2,26 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- viewport-fit=cover: la app usa toda la pantalla, incluida la zona del notch -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="description" content="PlantCare — gestor de riego de plantas que funciona en tu navegador, sin conexión." />
   <meta name="theme-color" content="#4CAF50" />
   <title>PlantCare — Gestor de riego de plantas</title>
+
+  <!-- ====================== PWA / instalación ====================== -->
+  <!-- Manifest (ruta relativa para funcionar en GitHub Pages bajo subdirectorio) -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- ====================== iOS (Safari — Añadir a pantalla de inicio) ====================== -->
+  <!-- Permite abrir la app a pantalla completa, sin la barra de Safari -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <!-- Nombre bajo el icono en la pantalla de inicio -->
+  <meta name="apple-mobile-web-app-title" content="PlantCare" />
+  <!-- Estilo de la barra de estado: "default" se integra con el verde del hero -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <!-- Icono para la pantalla de inicio en iPhone/iPad -->
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -63,6 +79,13 @@
 
       <!-- Cabecera de días + cuadrícula se inyectan desde app.js -->
       <div id="calGrid" class="cal-grid"></div>
+
+      <!-- Exportar los riegos previstos (próximos 30 días) a un archivo .ics -->
+      <div class="calendar-export">
+        <button id="btnExportIcs" class="btn btn--secondary" type="button">
+          📅 Exportar al calendario
+        </button>
+      </div>
     </section>
 
     <!-- Botón flotante para añadir (visible sobre todo en móvil) -->
