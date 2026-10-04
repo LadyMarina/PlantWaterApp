@@ -340,7 +340,7 @@
     WEEKDAYS.forEach((w) => {
       const head = document.createElement("div");
       head.className = "cal-weekday";
-      head.textContent = w;
+      enlace si se aloja online o instrucciones para ejecutar en loca      head.textContent = w;
       calGrid.appendChild(head);
     });
 

@@ -1,0 +1,22 @@
+=========================================================
+ PlantCare - Instrucciones de ejecucion y despliegue
+=========================================================
+
+PlantCare es una aplicacion web 100% cliente (HTML + CSS + JavaScript
+"vanilla"). No necesita servidor, ni base de datos, ni conexion a
+internet: los datos se guardan en el almacenamiento local del navegador
+(localStorage). Por eso es muy facil de ejecutar.
+
+
+---------------------------------------------------------
+ OPCION A - EJECUTAR EN LOCAL (la mas sencilla)
+---------------------------------------------------------
+
+1. Descomprime el .zip del proyecto (o clona el repositorio).
+2. Entra en la carpeta del proyecto.
+3. Haz doble clic en el archivo:  index.html
+   Se abrira en tu navegador por defecto (Chrome, Edge, Firefox...).
+
+Eso es todo. Ya puedes anadir plantas, regarlas, editarlas, eliminarlas
+y ver el calendario. Los datos quedan guardados en ese navegador.
+
